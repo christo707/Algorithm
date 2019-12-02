@@ -1,0 +1,52 @@
+1.Question 1
+In this programming assignment you will implement one or more of the integer multiplication algorithms described in lecture.
+
+To get the most out of this assignment, your program should restrict itself to multiplying only pairs of single-digit numbers. You can implement the grade-school algorithm if you want, but to get the most out of the assignment you'll want to implement recursive integer multiplication and/or Karatsuba's algorithm.
+
+So: what's the product of the following two 64-digit numbers?
+
+3141592653589793238462643383279502884197169399375105820974944592
+
+2718281828459045235360287471352662497757247093699959574966967627
+
+[TIP: before submitting, first test the correctness of your program on some small test cases of your own devising. Then post your best test cases to the discussion forums to help your fellow students!]
+
+[Food for thought: the number of digits in each input number is a power of 2. Does this make your life easier? Does it depend on which algorithm you're implementing?]
+
+The numeric answer should be typed in the space below. So if your answer is 1198233847, then just type 1198233847 in the space provided without any space / commas / any other punctuation marks.
+
+(We do not require you to submit your code, so feel free to use any programming language you want --- just type the final numeric answer in the following space.)
+
+______________________________________________________________________________________________________________________________________________________________________________________
+
+
+Solution(Java):
+
+public class Solution {
+    public String multiply(String num1, String num2) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        if(num1.length()==0||num2.length()==0) return "";
+        if(num1.equals("0")||num2.equals("0")) return "0";
+        char[] c1=new StringBuilder(num1).reverse().toString().toCharArray();
+        char[] c2=new StringBuilder(num2).reverse().toString().toCharArray();
+        char[] c=new char[c1.length+c2.length+1];
+        Arrays.fill(c,'0');
+        for(int i=0;i<c2.length;i++){
+            int dig2=c2[i]-'0';
+            int carry=0;
+            for(int j=0;j<c1.length;j++){
+                int dig1=c1[j]-'0';
+                int temp=c[i+j]-'0';
+                int cur=dig1*dig2+temp+carry;
+                c[i+j]=(char) (cur%10+'0');
+                carry=cur/10;
+            }
+            c[i+c1.length]=(char) (carry+'0');
+        }
+        String ret=new StringBuilder(new String(c)).reverse().toString();
+        int pos=0;
+        while(ret.charAt(pos)=='0'&&pos<ret.length()) pos++;
+        return ret.substring(pos);
+    }
+}
